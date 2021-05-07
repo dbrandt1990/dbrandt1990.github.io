@@ -17,9 +17,9 @@ This all came together as I worked through the project, but I must say that the 
 > -Alan Watts
 
 The biggest headaches came from managing the API and database as separate entities, and Omniauth. I needed the user to have a populated table of stations after they signed up, but those stations should not be associated with that user yet (the user would be able to choose what they wanted to be saved to their profile). The stations are gathered by the zip code set by the user upon signing up. If the zip code exists in my database then we should grab them from there, if not we should query the API and create the stations and add them to the database. 
-
-`def self.create_station_objects(zip, method)
-        #ONLY make api call if user and DB don't have station already
+```
+def self.create_station_objects(zip, method)
+       # ONLY make api call if user and DB don't have station already
         if Station.find_by(zip: zip).nil?
             method.each do |station|
                 ApiController.create_station(station)
@@ -30,7 +30,8 @@ The biggest headaches came from managing the API and database as separate entiti
             stations = Station.where(zip: zip)
         end
         stations
-    end`
+    end
+		```
 		
 Simple enough now that it is done, but getting there took some trial and error. Omniauth on the other hand was a bear for different reasons. I had an issue getting it to work initially, but didn't worry about it because I was going to use the Devise gem and the Oauth implementation is a bit different. Once I had Devise working, I ran into similar problems with Omniauth, getting 
 
